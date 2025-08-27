@@ -48,7 +48,7 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             {!isCollapsed && (
               <div>
-                <img src="lib/14-4.png" width="50%" height="50%"  alt="logo"></img>  
+                <img src="src/lib/14-4.png" width="50%" height="50%"  alt="logo"></img>  
               </div>
             )}
           </div>
