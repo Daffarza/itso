@@ -30,41 +30,47 @@ const AbsensiNonASN = () => {
     {
       id: 1,
       nama: "Ahmad Susanto",
-      divisi: "IT Support",
+      divisi: "Sekretariat",
+      tanggal: "01-08-2025",
       jamMasuk: "08:15",
       jamKeluar: "17:30",
       jamKerja: "8.25",
-      perasaan: "Baik",
+      perasaan: "Neutral",
       catatan: "Menyelesaikan update sistem"
     },
     {
       id: 2,
       nama: "Siti Nurhaliza",
-      divisi: "Administrasi",
+      divisi: "Sekretariat",
+      tanggal: "01-08-2025",
       jamMasuk: "08:00",
       jamKeluar: "17:00",
       jamKerja: "8.00",
-      perasaan: "Sangat Baik",
+      perasaan: "Neutral",
       catatan: "Laporan bulanan selesai"
     },
     {
       id: 3,
       nama: "Budi Santoso",
-      divisi: "Keamanan",
+      divisi: "Sekretariat",
+      tanggal: "01-08-2025",
       jamMasuk: "07:45",
       jamKeluar: "16:45",
       jamKerja: "8.00",
-      perasaan: "Baik",
+      perasaan: "-",
       catatan: "Patroli rutin selesai"
     }
   ];
 
   const bidangOptions = [
-    "Bagian Kepegawaian",
-    "Bagian Keuangan", 
-    "Bagian Administrasi",
-    "Bagian IT",
-    "Bagian Keamanan"
+    "Semua kecuali UPTD",
+    "APTIKA", 
+    "E-GOV",
+    "IKP",
+    "SANDIKAMI",
+    "Sekretariat",
+    "Statistik",
+    "UPTD PLDDIG"
   ];
 
   const handleFilter = () => {
@@ -92,18 +98,17 @@ const AbsensiNonASN = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Kehadiran Non ASN</h1>
-      </div>
+      
 
       {/* Filter Section */}
       <div className="bg-card rounded-lg border p-6 mb-6">
-        <div className="grid gap-6 md:grid-cols-3">
+      <h1 className="text-3xl font-low   text-foreground mb-2">Kehadiran Non ASN</h1>
+        <div className="grid gap-6 md:grid-cols-2">
           {/* Tanggal Awal */}
           <div className="space-y-2">
-            <Label htmlFor="tanggalAwal" className="text-sm font-medium">
+            <Label htmlFor="tanggalAwal" className="text-sm font-bold">
               Tanggal Awal
             </Label>
             <Input
@@ -118,7 +123,7 @@ const AbsensiNonASN = () => {
 
           {/* Tanggal Akhir */}
           <div className="space-y-2">
-            <Label htmlFor="tanggalAkhir" className="text-sm font-medium">
+            <Label htmlFor="tanggalAkhir" className="text-sm font-bold">
               Tanggal Akhir  
             </Label>
             <Input
@@ -133,12 +138,12 @@ const AbsensiNonASN = () => {
 
           {/* Nama Bidang */}
           <div className="space-y-2">
-            <Label htmlFor="namaBidang" className="text-sm font-medium">
+            <Label htmlFor="namaBidang" className="text-sm font-bold">
               Nama Bidang
             </Label>
             <Select value={filters.namaBidang} onValueChange={(value) => setFilters({ ...filters, namaBidang: value })}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="- Semua -" />
+                <SelectValue placeholder="--Semua--" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="semua">- Semua -</SelectItem>
@@ -204,11 +209,12 @@ const AbsensiNonASN = () => {
                   <TableHead className="text-center">No</TableHead>
                   <TableHead>Nama</TableHead>
                   <TableHead>Divisi</TableHead>
-                  <TableHead className="text-center">Jam Masuk</TableHead>
-                  <TableHead className="text-center">Jam Keluar</TableHead>
-                  <TableHead className="text-center">Jam Kerja</TableHead>
+                  <TableHead className="text-center">Tanggal</TableHead>
+                  <TableHead className="text-center">Scan Masuk</TableHead>
+                  <TableHead className="text-center">Scan Keluar</TableHead>
+                  <TableHead className="text-center">Jumlah Jam Kerja</TableHead>
                   <TableHead className="text-center">Perasaan</TableHead>
-                  <TableHead>Catatan</TableHead>
+                  <TableHead>Keterangan</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -217,6 +223,7 @@ const AbsensiNonASN = () => {
                     <TableCell className="text-center">{index + 1}</TableCell>
                     <TableCell className="font-medium">{item.nama}</TableCell>
                     <TableCell>{item.divisi}</TableCell>
+                    <TableCell className="text-center">{item.tanggal}</TableCell>
                     <TableCell className="text-center">{item.jamMasuk}</TableCell>
                     <TableCell className="text-center">{item.jamKeluar}</TableCell>
                     <TableCell className="text-center">{item.jamKerja} jam</TableCell>
@@ -238,29 +245,7 @@ const AbsensiNonASN = () => {
         </div>
       )}
 
-      {/* Search ASN Data Section */}
-      <div className="bg-card rounded-lg border p-6">
-        <h3 className="text-lg font-semibold mb-4">Cari Data ASN</h3>
-        <div className="flex gap-4 items-end">
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="searchAsn" className="text-sm font-medium">
-              Pencarian Data ASN
-            </Label>
-            <Input
-              id="searchAsn"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Masukkan nama atau NIP..."
-              className="w-full"
-            />
-          </div>
-          <Button variant="default" className="flex items-center gap-2">
-            <Search className="w-4 h-4" />
-            Cari
-          </Button>
-        </div>
-      </div>
+      
     </div>
   );
 };

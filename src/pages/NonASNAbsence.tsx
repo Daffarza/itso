@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 interface AbsentEmployee {
   id: number;
   nama: string;
-  unit: string;
+  UnitKerja: string;
   divisi: string;
   nomorTelepon: string;
   hariTidakHadir: number;
@@ -41,8 +41,8 @@ const NonASNAbsence = () => {
     {
       id: 1,
       nama: "Andi Wijaya",
-      unit: "Bagian IT",
-      divisi: "Technical Support",
+      UnitKerja: "Sekretariat",
+      divisi: "Sekretariat",
       nomorTelepon: "081234567890",
       hariTidakHadir: 18,
       tanggalTerakhir: "2024-01-15",
@@ -51,8 +51,8 @@ const NonASNAbsence = () => {
     {
       id: 2,
       nama: "Sri Rahayu",
-      unit: "Bagian Administrasi",
-      divisi: "Data Entry",
+      UnitKerja: "IKP",
+      divisi: "JQR",
       nomorTelepon: "081234567891",
       hariTidakHadir: 22,
       tanggalTerakhir: "2024-01-10",
@@ -61,8 +61,8 @@ const NonASNAbsence = () => {
     {
       id: 3,
       nama: "Muhammad Ikhsan",
-      unit: "Bagian Keamanan",
-      divisi: "Security",
+      UnitKerja: "IKP",
+      divisi: "JQR",
       nomorTelepon: "081234567892",
       hariTidakHadir: 25,
       tanggalTerakhir: "2024-01-08",
@@ -71,7 +71,7 @@ const NonASNAbsence = () => {
     {
       id: 4,
       nama: "Dewi Sartika",
-      unit: "Bagian Keuangan",
+      UnitKerja: "Bagian Keuangan",
       divisi: "Accounting",
       nomorTelepon: "081234567893",
       hariTidakHadir: 30,
@@ -116,62 +116,16 @@ const NonASNAbsence = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Non-ASN Absence Management</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Non PNS Tidak Absen</h2>
         <p className="text-muted-foreground">
-          Kelola pegawai yang tidak hadir 15+ hari berturut-turut
+          Data Pegawai DISKOMINFO JAWA BARAT yang tidak absen selama 15 hari berturut-turut dalam 30 hari terakhir
         </p>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-warning" />
-              Perlu Tindakan
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">{activeEmployees.length}</div>
-            <p className="text-xs text-muted-foreground">Pegawai aktif tidak hadir 15+ hari</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Ban className="h-4 w-4 text-destructive" />
-              Dinonaktifkan
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">{disabledEmployees.length}</div>
-            <p className="text-xs text-muted-foreground">Pegawai yang telah dinonaktifkan</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <UserX className="h-4 w-4 text-muted-foreground" />
-              Total
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{employees.length}</div>
-            <p className="text-xs text-muted-foreground">Total pegawai bermasalah</p>
-          </CardContent>
-        </Card>
-      </div>
+      
 
       {/* Active Employees Table */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-warning" />
-            Pegawai Perlu Tindakan ({activeEmployees.length})
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
@@ -179,12 +133,10 @@ const NonASNAbsence = () => {
                 <TableRow>
                   <TableHead>No</TableHead>
                   <TableHead>Nama</TableHead>
-                  <TableHead>Unit</TableHead>
+                  <TableHead>UnitKerja</TableHead>
                   <TableHead>Divisi</TableHead>
-                  <TableHead>No. Telepon</TableHead>
-                  <TableHead>Hari Tidak Hadir</TableHead>
-                  <TableHead>Tanggal Terakhir</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead>Nomor Telepon</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -192,31 +144,22 @@ const NonASNAbsence = () => {
                   <TableRow key={employee.id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium">{employee.nama}</TableCell>
-                    <TableCell>{employee.unit}</TableCell>
+                    <TableCell>{employee.UnitKerja}</TableCell>
                     <TableCell>{employee.divisi}</TableCell>
                     <TableCell>{employee.nomorTelepon}</TableCell>
-                    <TableCell>
-                      <Badge variant={employee.hariTidakHadir >= 25 ? "destructive" : "default"}>
-                        {employee.hariTidakHadir} hari
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{employee.tanggalTerakhir}</TableCell>
                     <TableCell>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="destructive" size="sm">
-                            <Ban className="w-4 h-4 mr-2" />
-                            Nonaktifkan
+                            <UserX className="w-4 h-4 mr-2" />
+                            
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Konfirmasi Nonaktifkan Pegawai</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Apakah Anda yakin ingin menonaktifkan <strong>{employee.nama}</strong>? 
-                              Pegawai ini telah tidak hadir selama <strong>{employee.hariTidakHadir} hari berturut-turut</strong>.
-                              <br /><br />
-                              Tindakan ini akan menonaktifkan akses pegawai ke sistem.
+                              Apakah yakin menonaktifkan pegawai ? 
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -250,56 +193,7 @@ const NonASNAbsence = () => {
       </Card>
 
       {/* Disabled Employees Table */}
-      {disabledEmployees.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Ban className="h-5 w-5 text-destructive" />
-              Pegawai Dinonaktifkan ({disabledEmployees.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>No</TableHead>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Unit</TableHead>
-                    <TableHead>Divisi</TableHead>
-                    <TableHead>No. Telepon</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Aksi</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {disabledEmployees.map((employee, index) => (
-                    <TableRow key={employee.id} className="opacity-75">
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell className="font-medium">{employee.nama}</TableCell>
-                      <TableCell>{employee.unit}</TableCell>
-                      <TableCell>{employee.divisi}</TableCell>
-                      <TableCell>{employee.nomorTelepon}</TableCell>
-                      <TableCell>
-                        <Badge variant="destructive">Dinonaktifkan</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEnableEmployee(employee.id, employee.nama)}
-                        >
-                          Aktifkan Kembali
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+
     </div>
   );
 };

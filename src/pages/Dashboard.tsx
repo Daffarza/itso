@@ -67,7 +67,7 @@ const Dashboard = () => {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <p className="text-muted-foreground">
-          Selamat datang di Sistem Absensi Non-ASN
+          Selamat Datang 
         </p>
       </div>
 
@@ -91,69 +91,9 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Aksi Cepat</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            {quickActions.map((action, index) => (
-              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <action.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{action.title}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {action.description}
-                      </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-3"
-                        onClick={action.action}
-                      >
-                        Buka
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+    
 
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Aktivitas Terbaru
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-              <UserCheck className="h-5 w-5 text-success" />
-              <div className="flex-1">
-                <p className="font-medium">1,156 pegawai hadir hari ini</p>
-                <p className="text-sm text-muted-foreground">Update terakhir: 09:00 WIB</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-              <AlertTriangle className="h-5 w-5 text-warning" />
-              <div className="flex-1">
-                <p className="font-medium">23 pegawai tidak hadir 15+ hari berturut-turut</p>
-                <p className="text-sm text-muted-foreground">Perlu tindakan segera</p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      
     </div>
   );
 };

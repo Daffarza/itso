@@ -17,13 +17,9 @@ const Header = () => {
   };
 
   return (
-    <header className="h-16 border-b bg-card flex items-center justify-between px-4">
+    <header className="h-20 border-b bg-card flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="p-2" />
-        <div>
-          <h1 className="font-semibold">Sistem Absensi Non-ASN</h1>
-          <p className="text-sm text-muted-foreground">Admin Kepegawaian</p>
-        </div>
       </div>
 
       <div className="flex items-center gap-4">

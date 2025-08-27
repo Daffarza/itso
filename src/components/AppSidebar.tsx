@@ -25,20 +25,16 @@ const menuItems = [
     icon: Home
   },
   {
-    title: "Absensi Non-ASN",
+    title: "Absen Non ASN",
     url: "/absensi",
-    icon: UserCheck
+    icon: Users
   },
   {
-    title: "Non-ASN Absence",
+    title: "Tidak Absen",
     url: "/absence",
-    icon: UserX
+    icon: Users
   },
-  {
-    title: "Export Data",
-    url: "/export",
-    icon: Download
-  }
+
 ];
 
 export function AppSidebar() {
@@ -48,22 +44,17 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-card">
-        <div className="p-4 border-b">
+        <div className="p-0.5 border-b">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-              <Users className="w-4 h-4 text-primary-foreground" />
-            </div>
             {!isCollapsed && (
               <div>
-                <h2 className="font-semibold text-sm">Absensi Non-ASN</h2>
-                <p className="text-xs text-muted-foreground">Admin Panel</p>
+                <img src="public/14-4.png" width="50%" height="50%"  alt="logo"></img>  
               </div>
             )}
           </div>
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Menu Utama</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
