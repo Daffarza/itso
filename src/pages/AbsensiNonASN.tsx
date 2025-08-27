@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,18 +11,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Filter, Download } from "lucide-react";
+import { Filter, Search, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const AbsensiNonASN = () => {
   const [filters, setFilters] = useState({
-    unitKerja: "",
-    periode: "",
-    startDate: "",
-    endDate: ""
+    namaBidang: "",
+    tanggalAwal: "",
+    tanggalAkhir: ""
   });
   
   const [showResults, setShowResults] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
 
   // Mock data
@@ -60,18 +59,16 @@ const AbsensiNonASN = () => {
     }
   ];
 
-  const unitKerjaOptions = [
+  const bidangOptions = [
     "Bagian Kepegawaian",
-    "Bagian Keuangan",
+    "Bagian Keuangan", 
     "Bagian Administrasi",
     "Bagian IT",
     "Bagian Keamanan"
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!filters.unitKerja || !filters.startDate || !filters.endDate) {
+  const handleFilter = () => {
+    if (!filters.namaBidang || !filters.tanggalAwal || !filters.tanggalAkhir) {
       toast({
         variant: "destructive",
         title: "Data tidak lengkap",
@@ -83,7 +80,7 @@ const AbsensiNonASN = () => {
     setShowResults(true);
     toast({
       title: "Data berhasil dimuat",
-      description: `Menampilkan data absensi untuk ${filters.unitKerja}`
+      description: `Menampilkan data kehadiran untuk ${filters.namaBidang}`
     });
   };
 
@@ -95,146 +92,175 @@ const AbsensiNonASN = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Absensi Non-ASN</h2>
-        <p className="text-muted-foreground">
-          Filter dan lihat data absensi pegawai non-ASN
-        </p>
+    <div className="min-h-screen bg-background p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-foreground mb-2">Kehadiran Non ASN</h1>
       </div>
 
-      {/* Filter Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Filter className="h-5 w-5" />
-            Filter Data
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="space-y-2">
-                <Label htmlFor="unitKerja">Unit Kerja</Label>
-                <Select value={filters.unitKerja} onValueChange={(value) =>
-                  setFilters({ ...filters, unitKerja: value })
-                }>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih Unit Kerja" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {unitKerjaOptions.map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {unit}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* Filter Section */}
+      <div className="bg-card rounded-lg border p-6 mb-6">
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* Tanggal Awal */}
+          <div className="space-y-2">
+            <Label htmlFor="tanggalAwal" className="text-sm font-medium">
+              Tanggal Awal
+            </Label>
+            <Input
+              id="tanggalAwal"
+              type="date"
+              value={filters.tanggalAwal}
+              onChange={(e) => setFilters({ ...filters, tanggalAwal: e.target.value })}
+              placeholder="dd/mm/yyyy"
+              className="w-full"
+            />
+          </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="startDate">Tanggal Mulai</Label>
-                <Input
-                  id="startDate"
-                  type="date"
-                  value={filters.startDate}
-                  onChange={(e) =>
-                    setFilters({ ...filters, startDate: e.target.value })
-                  }
-                />
-              </div>
+          {/* Tanggal Akhir */}
+          <div className="space-y-2">
+            <Label htmlFor="tanggalAkhir" className="text-sm font-medium">
+              Tanggal Akhir  
+            </Label>
+            <Input
+              id="tanggalAkhir"
+              type="date"
+              value={filters.tanggalAkhir}
+              onChange={(e) => setFilters({ ...filters, tanggalAkhir: e.target.value })}
+              placeholder="dd/mm/yyyy"
+              className="w-full"
+            />
+          </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="endDate">Tanggal Selesai</Label>
-                <Input
-                  id="endDate"
-                  type="date"
-                  value={filters.endDate}
-                  onChange={(e) =>
-                    setFilters({ ...filters, endDate: e.target.value })
-                  }
-                />
-              </div>
+          {/* Nama Bidang */}
+          <div className="space-y-2">
+            <Label htmlFor="namaBidang" className="text-sm font-medium">
+              Nama Bidang
+            </Label>
+            <Select value={filters.namaBidang} onValueChange={(value) => setFilters({ ...filters, namaBidang: value })}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="- Semua -" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="semua">- Semua -</SelectItem>
+                {bidangOptions.map((bidang) => (
+                  <SelectItem key={bidang} value={bidang}>
+                    {bidang}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
-              <div className="flex items-end">
-                <Button type="submit" className="w-full">
-                  <Search className="w-4 h-4 mr-2" />
-                  Tampilkan Data
-                </Button>
-              </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+        {/* Filter Button */}
+        <div className="flex justify-start mt-6">
+          <Button 
+            onClick={handleFilter}
+            variant="warning"
+            className="flex items-center gap-2 px-6"
+          >
+            <Filter className="w-4 h-4" />
+            Filter
+          </Button>
+        </div>
+      </div>
 
       {/* Results Table */}
       {showResults && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Data Absensi</CardTitle>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => exportData("Excel")}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Excel
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => exportData("PDF")}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  PDF
-                </Button>
-              </div>
+        <div className="bg-card rounded-lg border p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Data Kehadiran Non ASN</h3>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportData("Excel")}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Excel
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportData("PDF")}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                PDF
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportData("Copy")}
+              >
+                Copy
+              </Button>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>No</TableHead>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Divisi</TableHead>
-                    <TableHead>Jam Masuk</TableHead>
-                    <TableHead>Jam Keluar</TableHead>
-                    <TableHead>Jam Kerja</TableHead>
-                    <TableHead>Perasaan</TableHead>
-                    <TableHead>Catatan</TableHead>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="text-center">No</TableHead>
+                  <TableHead>Nama</TableHead>
+                  <TableHead>Divisi</TableHead>
+                  <TableHead className="text-center">Jam Masuk</TableHead>
+                  <TableHead className="text-center">Jam Keluar</TableHead>
+                  <TableHead className="text-center">Jam Kerja</TableHead>
+                  <TableHead className="text-center">Perasaan</TableHead>
+                  <TableHead>Catatan</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {attendanceData.map((item, index) => (
+                  <TableRow key={item.id} className="hover:bg-muted/30">
+                    <TableCell className="text-center">{index + 1}</TableCell>
+                    <TableCell className="font-medium">{item.nama}</TableCell>
+                    <TableCell>{item.divisi}</TableCell>
+                    <TableCell className="text-center">{item.jamMasuk}</TableCell>
+                    <TableCell className="text-center">{item.jamKeluar}</TableCell>
+                    <TableCell className="text-center">{item.jamKerja} jam</TableCell>
+                    <TableCell className="text-center">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        item.perasaan === "Sangat Baik" 
+                          ? "bg-success/20 text-success" 
+                          : "bg-primary/20 text-primary"
+                      }`}>
+                        {item.perasaan}
+                      </span>
+                    </TableCell>
+                    <TableCell>{item.catatan}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attendanceData.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell className="font-medium">{item.nama}</TableCell>
-                      <TableCell>{item.divisi}</TableCell>
-                      <TableCell>{item.jamMasuk}</TableCell>
-                      <TableCell>{item.jamKeluar}</TableCell>
-                      <TableCell>{item.jamKerja} jam</TableCell>
-                      <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          item.perasaan === "Sangat Baik" 
-                            ? "bg-success/10 text-success" 
-                            : "bg-primary/10 text-primary"
-                        }`}>
-                          {item.perasaan}
-                        </span>
-                      </TableCell>
-                      <TableCell>{item.catatan}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       )}
+
+      {/* Search ASN Data Section */}
+      <div className="bg-card rounded-lg border p-6">
+        <h3 className="text-lg font-semibold mb-4">Cari Data ASN</h3>
+        <div className="flex gap-4 items-end">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="searchAsn" className="text-sm font-medium">
+              Pencarian Data ASN
+            </Label>
+            <Input
+              id="searchAsn"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Masukkan nama atau NIP..."
+              className="w-full"
+            />
+          </div>
+          <Button variant="default" className="flex items-center gap-2">
+            <Search className="w-4 h-4" />
+            Cari
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
